@@ -46,4 +46,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function wines()
+    {
+        return $this->hasMany(Wine::class);
+    }
 }
