@@ -22,7 +22,9 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return response()->json(['message' => 'User registered']);
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['token' => $token]);
     }
 
     public function login(Request $request)
@@ -41,5 +43,12 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json(['token' => $token]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }
