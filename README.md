@@ -37,7 +37,7 @@ routes/
 ## 🛠️ Installation & Usage
 
 ```bash
-git clone https://github.com/your-username/wine-api.git
+git clone git@github.com:guduchango/wine-laravel-app.git
 cd wine-api
 composer install
 cp .env.example .env
