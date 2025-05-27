@@ -15,6 +15,7 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/wines', [WineController::class, 'index']);
+    Route::get('/wines/{id}', [WineController::class, 'find']);
     Route::post('/wines', [WineController::class, 'store']);
     Route::put('/wines/{id}', [WineController::class, 'update']);
     Route::delete('/wines/{id}', [WineController::class, 'destroy']);

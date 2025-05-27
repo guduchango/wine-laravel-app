@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('winery');
             $table->string('variety');
-            $table->tinyInteger('vintage');
+            $table->integer('vintage');
             $table->string('country');
             $table->timestamps();
         });
