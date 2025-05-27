@@ -30,6 +30,13 @@ class WineController extends Controller
         return response()->json($wine, 201);
     }
 
+    public function find($id)
+    {
+        $wine = auth()->user()->wines()->findOrFail($id);
+
+        return response()->json($wine);
+    }
+
     public function update(Request $request, $id)
     {
         $wine = auth()->user()->wines()->findOrFail($id);
