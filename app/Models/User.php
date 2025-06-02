@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class User extends Authenticatable
 {
@@ -50,5 +52,12 @@ class User extends Authenticatable
     public function wines()
     {
         return $this->hasMany(Wine::class);
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        $url = 'http://localhost:5173/reset-password/'.$token;
+
+        $this->notify(new ResetPassword($url));
     }
 }
