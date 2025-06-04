@@ -15,18 +15,13 @@ class WineController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'winery' => 'required|string',
-            'variety' => 'required|string',
-            'vintage' => 'required|integer',
-            'country' => 'required|string',
-        ]);
+        $request->validate($this->getValidateRules());
 
         $wine = auth()->user()
             ->wines()
-            ->create($request->only(['name', 'winery', 'variety','vintage','country']));
-
+            ->create($request->only(
+                $this->getFields()
+            ));
 
         return response()->json($wine, 201);
     }
@@ -41,9 +36,13 @@ class WineController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate($this->getValidateRules());
+
         $wine = auth()->user()->wines()->findOrFail($id);
 
-        $wine->update($request->only(['name', 'winery', 'variety','vintage','country']));
+        $wine->update($request->only(
+            $this->getFields()
+        ));
 
         return response()->json($wine);
     }
@@ -51,8 +50,45 @@ class WineController extends Controller
     public function destroy($id)
     {
         $wine = auth()->user()->wines()->findOrFail($id);
+
         $wine->delete();
 
         return response()->json(['message' => 'Wine deleted']);
+    }
+
+    protected function getValidateRules(){
+        return [
+            'name' => 'required|string',
+            'variety' => 'required|string',
+            'vintage' => 'required|integer',
+            'alcohol' => 'required|numeric',
+            'price' => 'required|numeric',
+            'color' => 'required|string',
+            'aroma' => 'required|string',
+            'sweetness' => 'required|string',
+            'acidity' => 'required|string',
+            'tannin' => 'required|string',
+            'body' => 'required|string',
+            'persistence' => 'required|string',
+            'score' => 'required|string',
+        ];
+    }
+
+    protected function getFields(){
+        return [
+            'name',
+            'variety',
+            'vintage',
+            'alcohol',
+            'price',
+            'color',
+            'aroma',
+            'sweetness',
+            'acidity',
+            'tannin',
+            'body',
+            'persistence',
+            'score'
+        ];
     }
 }

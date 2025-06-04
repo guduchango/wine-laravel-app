@@ -8,7 +8,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Wine extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'winery', 'variety','vintage','country'];
+    protected $fillable = [
+        'name',
+        'variety',
+        'vintage',
+        'alcohol',
+        'price',
+        'color',
+        'aroma',
+        'sweetness',
+        'acidity',
+        'tannin',
+        'body',
+        'persistence',
+        'score'
+    ];
 
     public function user()
     {

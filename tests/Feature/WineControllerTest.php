@@ -19,7 +19,7 @@ class WineControllerTest extends TestCase
     {
         parent::setUp();
 
-        // Si el usuario aún no fue creado, lo creamos una sola vez para todos los tests de esta clase
+
         if (!isset(self::$user)) {
             self::$user = User::factory()->create();
             $token = self::$user->createToken('auth_token')->plainTextToken;
@@ -30,13 +30,17 @@ class WineControllerTest extends TestCase
 
     public function test_can_create_wine()
     {
-        $data = [
-            'name' => 'Cabernet Sauvignon',
-            'winery' => 'Bodega Mendoza',
-            'variety' => 'Malbec',
-            'vintage' => 2020,
-            'country' => 'Argentina',
-        ];
+
+        $wine = Wine::factory()->make(
+            [
+                'user_id' => self::$user->id,
+                'name' => 'Cabernet Sauvignon',
+                'variety' => 'Malbec',
+                'vintage' => 2020,
+            ]
+        );
+
+        $data = $wine->toArray();
 
         $response = $this->postJson('/api/wines', $data, self::$headers);
         $response->assertStatus(201);
@@ -59,14 +63,19 @@ class WineControllerTest extends TestCase
 
     public function test_can_update_a_wine()
     {
-        $wine = Wine::factory()->create(
-            ['user_id' => self::$user->id]
+        $wine = Wine::where('user_id',self::$user->id)
+            ->first();
+
+        $wineData = Wine::factory()->make(
+            [
+                'id' => $wine->id,
+                'user_id' => self::$user->id,
+                'name' => 'Updated Wine'
+            ]
         );
 
-        $data = ['name' => 'Updated Wine'];
-
+        $data = $wineData->toArray();
         $response = $this->putJson("/api/wines/{$wine->id}", $data, self::$headers);
-
         $response->assertStatus(200);
         $this->assertDatabaseHas('wines', ['id' => $wine->id, 'name' => 'Updated Wine']);
     }

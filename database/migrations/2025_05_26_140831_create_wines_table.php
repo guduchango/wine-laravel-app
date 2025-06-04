@@ -15,10 +15,18 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('name');
-            $table->string('winery');
             $table->string('variety');
             $table->integer('vintage');
-            $table->string('country');
+            $table->float('alcohol');
+            $table->float('price');
+            $table->string('color');
+            $table->string('aroma');
+            $table->string('sweetness');
+            $table->string('acidity');
+            $table->string('tannin');
+            $table->string('body');
+            $table->string('persistence');
+            $table->string('score');
             $table->timestamps();
         });
     }

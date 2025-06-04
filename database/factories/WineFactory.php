@@ -11,10 +11,25 @@ class WineFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'winery' => $this->faker->company,
-            'variety' => $this->faker->word,
+            'variety' => $this->faker->company,
             'vintage' => $this->faker->year,
-            'country' => $this->faker->country,
+            'alcohol' => $this->faker->randomFloat(1, 11, 16),
+            'price' => $this->faker->numberBetween(3000, 50000),
+            'color' => $this->faker->randomElement(['translucent', 'medium', 'deep']),
+            'aroma' => $this->faker->randomElement(['low', 'medium', 'intense']),
+            'sweetness' => $this->faker->randomElement(['dry', 'semi-dry,', 'sweet']),
+            'acidity' => $this->faker->randomElement(['low', 'medium', 'high']),
+            'tannin' => $this->faker->randomElement(['mild', 'medium,', 'antringent']),
+            'body' => $this->faker->randomElement(['light', 'medium,', 'robust']),
+            'persistence' => $this->faker->randomElement(['short', 'medium,', 'long']),
+            'score' => $this->faker->randomElement(
+                [
+                    'special gathering',
+                    'get-together with close friends',
+                    'hangout with friends',
+                    'it\'s tasty, but expensive',
+                    'I wouldn\'t buy it'
+                ]),
         ];
     }
 }
