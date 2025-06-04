@@ -32,8 +32,8 @@ class WineController extends Controller
 
     public function find($id)
     {
-        $wine = auth()->user()->wines()->findOrFail($id);
-
+        $user = auth()->user();
+        $wine = Wine::where('id', $id)->where('user_id', $user->id)->firstOrFail();
         return response()->json($wine);
     }
 
