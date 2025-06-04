@@ -10,7 +10,6 @@ class WineFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
             'name' => $this->faker->word,
             'winery' => $this->faker->company,
             'variety' => $this->faker->word,

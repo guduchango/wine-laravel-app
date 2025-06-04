@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Wine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WineController extends Controller
 {
@@ -33,6 +34,7 @@ class WineController extends Controller
     public function find($id)
     {
         $user = auth()->user();
+        Log::info("id {$id} user_id {$user->id}");
         $wine = Wine::where('id', $id)->where('user_id', $user->id)->firstOrFail();
         return response()->json($wine);
     }

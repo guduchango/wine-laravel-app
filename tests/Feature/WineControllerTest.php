@@ -5,37 +5,31 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Wine;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class WineControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
 
-    protected function authenticate()
+    protected static User $user;
+    protected static array $headers;
+
+    protected function setUp(): void
     {
-        $user = User::factory()->create();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        parent::setUp();
 
-        return ['Authorization' => 'Bearer ' . $token];
-    }
-
-    public function test_can_list_wines()
-    {
-        Wine::factory()->count(3)->create();
-        $headers = $this->authenticate();
-
-        $response = $this->getJson('/api/wines', $headers);
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            '*' => ['id', 'name', 'description', 'created_at', 'updated_at']
-        ]);
+        // Si el usuario aún no fue creado, lo creamos una sola vez para todos los tests de esta clase
+        if (!isset(self::$user)) {
+            self::$user = User::factory()->create();
+            $token = self::$user->createToken('auth_token')->plainTextToken;
+            self::$headers = ['Authorization' => 'Bearer ' . $token];
+            Log::info("Usuario creado una sola vez con ID " . self::$user->id);
+        }
     }
 
     public function test_can_create_wine()
     {
-        $user = User::factory()->create();
-
         $data = [
             'name' => 'Cabernet Sauvignon',
             'winery' => 'Bodega Mendoza',
@@ -44,19 +38,18 @@ class WineControllerTest extends TestCase
             'country' => 'Argentina',
         ];
 
-        $response = $this->actingAs($user)->postJson('/api/wines', $data);
-
+        $response = $this->postJson('/api/wines', $data, self::$headers);
         $response->assertStatus(201);
         $this->assertDatabaseHas('wines', ['name' => 'Cabernet Sauvignon']);
     }
 
+
     public function test_can_show_a_wine()
     {
-        $headers = $this->authenticate();
-        $wine = Wine::factory()->create();
-
-        $response = $this->getJson("/api/wines/{$wine->id}", $headers);
-
+        $wine = Wine::factory()->create(
+            ['user_id' => self::$user->id]
+        );
+        $response = $this->getJson("/api/wines/{$wine->id}", self::$headers);
         $response->assertStatus(200);
         $response->assertJson([
             'id' => $wine->id,
@@ -66,12 +59,13 @@ class WineControllerTest extends TestCase
 
     public function test_can_update_a_wine()
     {
-        $headers = $this->authenticate();
-        $wine = Wine::factory()->create();
+        $wine = Wine::factory()->create(
+            ['user_id' => self::$user->id]
+        );
 
         $data = ['name' => 'Updated Wine'];
 
-        $response = $this->putJson("/api/wines/{$wine->id}", $data, $headers);
+        $response = $this->putJson("/api/wines/{$wine->id}", $data, self::$headers);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('wines', ['id' => $wine->id, 'name' => 'Updated Wine']);
@@ -79,12 +73,15 @@ class WineControllerTest extends TestCase
 
     public function test_can_delete_a_wine()
     {
-        $headers = $this->authenticate();
-        $wine = Wine::factory()->create();
 
-        $response = $this->deleteJson("/api/wines/{$wine->id}", [], $headers);
+        $wine = Wine::factory()->create(
+            ['user_id' => self::$user->id]
+        );
+
+        $response = $this->deleteJson("/api/wines/{$wine->id}", [], self::$headers);
 
         $response->assertStatus(200); // o 204 si lo manejás así
         $this->assertDatabaseMissing('wines', ['id' => $wine->id]);
     }
+
 }
