@@ -19,7 +19,6 @@ class WineControllerTest extends TestCase
     {
         parent::setUp();
 
-
         if (!isset(self::$user)) {
             self::$user = User::factory()->create();
             $token = self::$user->createToken('auth_token')->plainTextToken;

@@ -94,5 +94,20 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Password updated successfully.']);
     }
+
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        $userUpdate = User::where('id',$user->id)->first();
+        $userUpdate->name = $request->name;
+        $userUpdate->save();
+
+        return response()->json($userUpdate);
+    }
 }
 
