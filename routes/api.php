@@ -17,6 +17,7 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 // Wine routes
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/update-profile', [AuthController::class, 'updateProfile']);
     Route::get('/wines', [WineController::class, 'index']);
     Route::get('/wines/{id}', [WineController::class, 'find']);
     Route::post('/wines', [WineController::class, 'store']);
