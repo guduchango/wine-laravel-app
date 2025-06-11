@@ -71,6 +71,7 @@ class WineController extends Controller
             'body' => 'required|string',
             'persistence' => 'required|string',
             'score' => 'required|string',
+            'tasted_day' => 'required'
         ];
     }
 
@@ -88,7 +89,8 @@ class WineController extends Controller
             'tannin',
             'body',
             'persistence',
-            'score'
+            'score',
+            'tasted_day'
         ];
     }
 }

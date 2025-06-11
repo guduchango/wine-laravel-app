@@ -10,9 +10,9 @@ class WineFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
-            'variety' => $this->faker->company,
-            'vintage' => $this->faker->year,
+            'name' => $this->faker->randomElement(['animal', 'vaca','perro','lobo','elefante','casa','auto']),
+            'variety' => $this->faker->randomElement(['malbec', 'cabernet sauvignon', 'bonarda','syrah','tempranillo','merlot','petit verdot','pinot noir','torrontes','chardonnay','sauvignon blanc']),
+            'vintage' => $this->faker->numberBetween(2020, 2025),
             'alcohol' => $this->faker->randomFloat(1, 11, 16),
             'price' => $this->faker->numberBetween(3000, 50000),
             'color' => $this->faker->randomElement(['translucent', 'medium', 'deep']),
@@ -22,6 +22,7 @@ class WineFactory extends Factory
             'tannin' => $this->faker->randomElement(['mild', 'medium,', 'antringent']),
             'body' => $this->faker->randomElement(['light', 'medium,', 'robust']),
             'persistence' => $this->faker->randomElement(['short', 'medium,', 'long']),
+            'tasted_day' => $this->faker->date(),
             'score' => $this->faker->randomElement(
                 [
                     'special gathering',
@@ -30,6 +31,7 @@ class WineFactory extends Factory
                     'it\'s tasty, but expensive',
                     'I wouldn\'t buy it'
                 ]),
+
         ];
     }
 }
