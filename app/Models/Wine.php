@@ -30,6 +30,11 @@ class Wine extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
     public function setTastedDayAttribute($value)
     {
         // Si ya viene en formato Y-m-d, lo dejamos como está

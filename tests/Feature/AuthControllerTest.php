@@ -11,7 +11,7 @@ use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
 {
-    //use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_user_can_register()
     {

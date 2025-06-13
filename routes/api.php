@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WineController;
+use App\Http\Controllers\WinePhotoController;
 
 // Auth routes
 Route::middleware('auth:sanctum')->get('/user', fn(Request $request) => $request->user());
@@ -23,5 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/wines', [WineController::class, 'store']);
     Route::put('/wines/{id}', [WineController::class, 'update']);
     Route::delete('/wines/{id}', [WineController::class, 'destroy']);
+    Route::post('/wines/{wine}/photos', [WinePhotoController::class, 'store']);
+    Route::post('/wines/{wine}/multi-photos', [WinePhotoController::class, 'multiStore']);
+    Route::get('/wines/{wine}/photos', [WinePhotoController::class, 'index']);
+    Route::delete('/photos/{id}', [WinePhotoController::class, 'destroy']);
+
 });
 
